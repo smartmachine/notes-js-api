@@ -1,4 +1,4 @@
-service: notes-app-api
+service: notes-js-api
 
 plugins:
   - serverless-webpack
@@ -7,7 +7,7 @@ plugins:
 
 custom:
   customDomain:
-    domainName: notes-api.aws.smartmachine.io
+    domainName: notes-js-api.aws.smartmachine.io
     basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
@@ -19,7 +19,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: prod
+  stage: dev
   region: eu-west-1
   profile: admin
   iamRoleStatements:
