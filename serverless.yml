@@ -7,11 +7,13 @@ plugins:
 
 custom:
   customDomain:
-    domainName: notes-js-api.aws.smartmachine.io
+    domainName: notes-${self:custom.stage}-js-api.aws.smartmachine.io
     basePath: ''
-    stage: ${self:provider.stage}
+    stage: ${self:custom.stage}
     createRoute53Record: true
     certificateName: '*.aws.smartmachine.io'
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:custom.stage}-notes
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -22,6 +24,8 @@ provider:
   stage: dev
   region: eu-west-1
   profile: admin
+  environment:
+    tableName: ${self:custom.tableName}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -32,7 +36,8 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+      Resource:
+        - "Fn::GetAtt": [ NotesTable, Arn ]
 
 functions:
   create:
@@ -78,3 +83,4 @@ functions:
 
 resources:
   - ${file(resources/api-gateway-errors.yml)}
+  - ${file(resources/dynamodb-table.yml)}
