@@ -1,8 +1,14 @@
 {
-  "plugins": ["source-map-support", "transform-runtime"],
   "presets": [
-    ["env", { "node": "10.15" }],
-    "stage-3"
+    "jest", [ "@babel/preset-env", {
+      "debug": false,
+      "modules": "commonjs",
+      "targets": {
+        "node": "current"
+      },
+      "useBuiltIns": false
+    }
+    ]
   ]
 }
 
